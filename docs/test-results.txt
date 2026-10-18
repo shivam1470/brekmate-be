@@ -1,0 +1,146 @@
+Backend check output
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 check
+> npm run typecheck && npm test && npm run contracts && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 test
+> node --import tsx --test test/*.test.ts
+
+✔ strict delivery threshold and reward cap (1.015079ms)
+✔ basket uses quantity and add-ons (0.205633ms)
+✔ invalid money -1 (0.304239ms)
+✔ invalid money NaN (0.087289ms)
+✔ invalid money Infinity (0.072807ms)
+✔ invalid money 1.5 (0.137944ms)
+✔ invalid money 9007199254740991 (0.118455ms)
+✔ server catalogue ignores forged client prices (6.909678ms)
+✔ duplicate checkout returns same order and reserves stock once (3.019905ms)
+✔ idempotency key cannot be reused with different body (2.107684ms)
+✔ concurrent buyers cannot oversell (15.705101ms)
+✔ order ownership enforced (0.850997ms)
+✔ invalid order transitions denied (7.563954ms)
+✔ customer cannot manage menu (0.429304ms)
+✔ cancellation restores stock exactly once (1.491803ms)
+✔ online checkout fails closed until gateway integration configured (0.315386ms)
+✔ delivery outside configured radius rejected (0.898587ms)
+✔ booking enquiry does not reserve; simultaneous confirmations cannot overlap (7.517436ms)
+✔ booking guest limit enforced (1.335734ms)
+✔ deleted account cannot order (0.710991ms)
+✔ Dynamo gets and paginated queries use strong reads and table key conditions (3.187809ms)
+✔ Dynamo preserves retry/error semantics TransactionConflictException undefined (0.770459ms)
+✔ Dynamo preserves retry/error semantics TransactionCanceledException ConditionalCheckFailed,None (0.222729ms)
+✔ Dynamo preserves retry/error semantics TransactionCanceledException ProvisionedThroughputExceeded (0.464696ms)
+✔ Dynamo preserves retry/error semantics AccessDeniedException undefined (0.179735ms)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+✔ health is public, all customer data requires authentication (110.391031ms)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+✔ HTTP checkout, strict schemas, ownership, replay, staff transitions (22.458358ms)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+✔ HTTP rejects missing idempotency, content type, oversize payload (9.333348ms)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+✔ HTTP does not expose stack traces, OTP hashes, cacheable responses (7.825321ms)
+✔ HTTP profile, address, support and booking customer/staff journey (18.217673ms)
+✔ reward rounding and subtotal threshold 0 (0.890014ms)
+✔ reward rounding and subtotal threshold 1 (0.097434ms)
+✔ reward rounding and subtotal threshold 4 (0.090614ms)
+✔ reward rounding and subtotal threshold 5 (0.14217ms)
+✔ reward rounding and subtotal threshold 9900 (0.08815ms)
+✔ reward rounding and subtotal threshold 9901 (0.060079ms)
+✔ reward rounding and subtotal threshold 9999 (0.151203ms)
+✔ reward rounding and subtotal threshold 10000 (0.080489ms)
+✔ reward rounding and subtotal threshold 10001 (1.131021ms)
+✔ real public quote rejects customer price and balance injection (6.263293ms)
+✔ duplicated SKU and addon selections rejected (10.165288ms)
+✔ reorder re-prices against current menu (3.406422ms)
+✔ deleting address removes its PII and hides it from address list (2.242432ms)
+✔ order status notification is written with state transition (1.810114ms)
+✔ menu query pagination preserves all products (10.999069ms)
+✔ insufficient stock aborts all wallet and order writes (0.864947ms)
+✔ runtime cannot enable ordering before policy review (2.079832ms)
+✔ verified customer claims cannot become staff through groups (1.667934ms)
+✔ staff groups are allowlisted (0.211833ms)
+✔ reject claims {"token_use":"id"} (0.23681ms)
+✔ reject claims {"client_id":"other"} (0.077985ms)
+✔ reject claims {"sub":"bad#identity"} (0.273043ms)
+✔ reject claims {} (0.07505ms)
+✔ auth does not trust arbitrary issuer URLs (1.939636ms)
+✔ production config fails closed with missing configuration (2.926023ms)
+✔ production config rejects local/test overrides (0.481822ms)
+✔ ledger overwrites are impossible through transaction API (0.724791ms)
+✔ read-only dependencies are included in Dynamo transaction conditions (5.228765ms)
+✔ idempotent replay cannot bypass a staff role downgrade (13.716093ms)
+✔ referral reward waits for delivery AND exact COD collection, credits once (22.301346ms)
+✔ self-referral denied and referral locked after order (1.2798ms)
+✔ reward debit and cancellation restoration are atomic and immutable (8.310607ms)
+✔ concurrent reward spending cannot double-spend available balance (3.793153ms)
+✔ COD cannot be collected before delivery or by unrelated rider (3.977386ms)
+✔ delivery OTP belongs to customer and rider assignment is enforced (3.818211ms)
+✔ five invalid OTP attempts lock delivery verification (2.644627ms)
+✔ closed cafe, unknown SKU and invalid addons are rejected (1.299109ms)
+✔ booking consent is required for requested photo delivery (2.175824ms)
+✔ cancelled booking releases slots for another confirmation (1.837965ms)
+✔ unapproved venue schedule disables confirmation, enquiries still work (0.471917ms)
+✔ support cannot attach another customers order (1.04267ms)
+ℹ tests 71
+ℹ suites 0
+ℹ pass 71
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 639.288256
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 contracts
+> node --import tsx scripts/contracts.ts
+
+(node:186) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Generated 35 routes.
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 build
+> node scripts/build.mjs
+
+Built dist/index.mjs (handler index.handler) and pricing contract module.
+
+Pricing vector summary
+✔ BM-PRICE-V0432 {"subtotalPaise":50000,"availableRewardPaise":10000,"fulfilment":"pickup","useRewards":true} (0.024577ms)
+ℹ tests 37296
+ℹ suites 0
+ℹ pass 37296
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7414.580036
+
+Loaded-module coverage (excludes unloaded entrypoints/secrets)
+ℹ start of coverage report
+ℹ -----------------------------------------------------------------------------------------------
+ℹ file        | line % | branch % | funcs % | uncovered lines
+ℹ -----------------------------------------------------------------------------------------------
+ℹ src         |        |          |         | 
+ℹ  app.ts     |  88.13 |    93.33 |   65.22 | 11 40 52 64 72-74 76-78 81 84-86 89-90 108 122-123
+ℹ  auth.ts    |  68.97 |    91.67 |   85.71 | 34-42 44-61
+ℹ  config.ts  |  78.33 |    85.71 |   75.00 | 39-51
+ℹ  dynamo.ts  | 100.00 |    80.77 |  100.00 | 
+ℹ  errors.ts  | 100.00 |   100.00 |  100.00 | 
+ℹ  pricing.ts | 100.00 |   100.00 |  100.00 | 
+ℹ  schemas.ts |  98.08 |    70.00 |  100.00 | 65-66
+ℹ  service.ts |  96.14 |    90.10 |   96.74 | 227-229 232 234 260-269 346 602-624
+ℹ  store.ts   |  99.05 |    97.96 |  100.00 | 21
+ℹ -----------------------------------------------------------------------------------------------
+ℹ all files   |  94.07 |    90.84 |   89.12 | 
+ℹ -----------------------------------------------------------------------------------------------
+ℹ end of coverage report

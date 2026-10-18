@@ -1,0 +1,2546 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "BrekMate backend",
+    "version": "0.1.0",
+    "description": "Implemented core API. Live payments and refunds are not implemented. Response schemas require further stabilization; source return types are authoritative for this version."
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Cognito access JWT"
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "get__health",
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/venue": {
+      "get": {
+        "operationId": "get__v1_venue",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/outlet": {
+      "get": {
+        "operationId": "get__v1_outlet",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/serviceability": {
+      "post": {
+        "operationId": "post__v1_serviceability",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "latitude": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  }
+                },
+                "required": [
+                  "latitude",
+                  "longitude"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/checkouts/reconcile": {
+      "post": {
+        "operationId": "post__v1_checkouts_reconcile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{8,128}$"
+                  },
+                  "abandon": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "key",
+                  "abandon"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/staff/riders": {
+      "get": {
+        "operationId": "get__v1_staff_riders",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/staff/cash/{id}": {
+      "get": {
+        "operationId": "get__v1_staff_cash__id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/orders/{id}/delivery-issues": {
+      "post": {
+        "operationId": "post__v1_orders__id_delivery_issues",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "enum": [
+                      "customer_unreachable",
+                      "cash_refused",
+                      "address_problem",
+                      "other"
+                    ]
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 300
+                  }
+                },
+                "required": [
+                  "reason",
+                  "note"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/notifications": {
+      "get": {
+        "operationId": "get__v1_notifications",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/orders/{id}/reorder": {
+      "post": {
+        "operationId": "post__v1_orders__id_reorder",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/addresses/{id}": {
+      "delete": {
+        "operationId": "delete__v1_addresses__id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      },
+      "put": {
+        "operationId": "put__v1_addresses__id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 300
+                  },
+                  "latitude": {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                  },
+                  "longitude": {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  },
+                  "recipientName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "phone": {
+                    "type": "string",
+                    "pattern": "^\\+[1-9][0-9]{7,14}$"
+                  },
+                  "floor": {
+                    "type": "string",
+                    "maxLength": 80
+                  },
+                  "landmark": {
+                    "type": "string",
+                    "maxLength": 120
+                  }
+                },
+                "required": [
+                  "line",
+                  "latitude",
+                  "longitude"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/menu": {
+      "get": {
+        "operationId": "get__v1_menu",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/quotes": {
+      "post": {
+        "operationId": "post__v1_quotes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "lines": {
+                    "minItems": 1,
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "sku": {
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 20
+                        },
+                        "addons": {
+                          "default": [],
+                          "maxItems": 10,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+                          }
+                        },
+                        "instructions": {
+                          "type": "string",
+                          "maxLength": 300
+                        }
+                      },
+                      "required": [
+                        "sku",
+                        "quantity",
+                        "addons"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "fulfilment": {
+                    "type": "string",
+                    "enum": [
+                      "delivery",
+                      "pickup"
+                    ]
+                  },
+                  "useRewards": {
+                    "type": "boolean"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "line": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 300
+                      },
+                      "latitude": {
+                        "type": "number",
+                        "minimum": -90,
+                        "maximum": 90
+                      },
+                      "longitude": {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      },
+                      "recipientName": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "phone": {
+                        "type": "string",
+                        "pattern": "^\\+[1-9][0-9]{7,14}$"
+                      },
+                      "floor": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "landmark": {
+                        "type": "string",
+                        "maxLength": 120
+                      }
+                    },
+                    "required": [
+                      "line",
+                      "latitude",
+                      "longitude"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "lines",
+                  "fulfilment",
+                  "useRewards"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders": {
+      "post": {
+        "operationId": "post__v1_orders",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "lines": {
+                    "minItems": 1,
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "sku": {
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 20
+                        },
+                        "addons": {
+                          "default": [],
+                          "maxItems": 10,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+                          }
+                        },
+                        "instructions": {
+                          "type": "string",
+                          "maxLength": 300
+                        }
+                      },
+                      "required": [
+                        "sku",
+                        "quantity",
+                        "addons"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "fulfilment": {
+                    "type": "string",
+                    "enum": [
+                      "delivery",
+                      "pickup"
+                    ]
+                  },
+                  "useRewards": {
+                    "type": "boolean"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "line": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 300
+                      },
+                      "latitude": {
+                        "type": "number",
+                        "minimum": -90,
+                        "maximum": 90
+                      },
+                      "longitude": {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      },
+                      "recipientName": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "phone": {
+                        "type": "string",
+                        "pattern": "^\\+[1-9][0-9]{7,14}$"
+                      },
+                      "floor": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "landmark": {
+                        "type": "string",
+                        "maxLength": 120
+                      }
+                    },
+                    "required": [
+                      "line",
+                      "latitude",
+                      "longitude"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "payment": {
+                    "type": "string",
+                    "enum": [
+                      "COD",
+                      "ONLINE"
+                    ]
+                  },
+                  "quoteToken": {
+                    "type": "string",
+                    "maxLength": 300
+                  }
+                },
+                "required": [
+                  "lines",
+                  "fulfilment",
+                  "useRewards",
+                  "payment"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "get__v1_orders",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/orders/{id}": {
+      "get": {
+        "operationId": "get__v1_orders__id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/orders/{id}/status": {
+      "post": {
+        "operationId": "post__v1_orders__id_status",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "accepted",
+                      "rejected",
+                      "preparing",
+                      "ready",
+                      "out_for_delivery",
+                      "delivered",
+                      "cancelled"
+                    ]
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 300
+                  },
+                  "otp": {
+                    "type": "string",
+                    "pattern": "^\\d{6}$"
+                  }
+                },
+                "required": [
+                  "status"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders/{id}/assignment": {
+      "post": {
+        "operationId": "post__v1_orders__id_assignment",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "riderId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "riderId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders/{id}/collection": {
+      "post": {
+        "operationId": "post__v1_orders__id_collection",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "amountPaise": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "amountPaise"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/orders/{id}/otp": {
+      "post": {
+        "operationId": "post__v1_orders__id_otp",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 300
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "get__v1_orders__id_otp",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/rider/orders": {
+      "get": {
+        "operationId": "get__v1_rider_orders",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/staff/riders/{id}": {
+      "put": {
+        "operationId": "put__v1_staff_riders__id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "active": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "active"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/staff/products": {
+      "put": {
+        "operationId": "put__v1_staff_products",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "expectedVersion": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "sku": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                  },
+                  "category": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "pricePaise": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100000000
+                  },
+                  "stock": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100000
+                  },
+                  "available": {
+                    "type": "boolean"
+                  },
+                  "vegetarian": {
+                    "type": "boolean",
+                    "const": true
+                  },
+                  "addons": {
+                    "default": {},
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+                    },
+                    "additionalProperties": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100000000
+                    }
+                  }
+                },
+                "required": [
+                  "sku",
+                  "name",
+                  "category",
+                  "pricePaise",
+                  "stock",
+                  "available",
+                  "vegetarian",
+                  "addons"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/staff/outlet": {
+      "put": {
+        "operationId": "put__v1_staff_outlet",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "open"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profile": {
+      "get": {
+        "operationId": "get__v1_profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      },
+      "put": {
+        "operationId": "put__v1_profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "preferences": {
+                    "type": "object",
+                    "properties": {
+                      "marketing": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "marketing"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "name",
+                  "preferences"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete__v1_profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/addresses": {
+      "get": {
+        "operationId": "get__v1_addresses",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/wallet": {
+      "get": {
+        "operationId": "get__v1_wallet",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/referral-code": {
+      "post": {
+        "operationId": "post__v1_referral_code",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/referrals": {
+      "post": {
+        "operationId": "post__v1_referrals",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{16}$"
+                  }
+                },
+                "required": [
+                  "code"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/bookings": {
+      "post": {
+        "operationId": "post__v1_bookings",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "occasion": {
+                    "type": "string",
+                    "enum": [
+                      "birthday",
+                      "farewell",
+                      "office",
+                      "casual"
+                    ]
+                  },
+                  "guests": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20
+                  },
+                  "startsAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                  },
+                  "endsAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                  },
+                  "theme": {
+                    "default": "",
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "cameraAssistanceRequested": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "photoChannel": {
+                    "type": "string",
+                    "enum": [
+                      "email",
+                      "whatsapp",
+                      "none"
+                    ]
+                  },
+                  "photoContact": {
+                    "type": "string",
+                    "maxLength": 120
+                  },
+                  "photoConsent": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "occasion",
+                  "guests",
+                  "startsAt",
+                  "endsAt",
+                  "theme",
+                  "cameraAssistanceRequested",
+                  "photoChannel",
+                  "photoConsent"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "get__v1_bookings",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/bookings/{id}": {
+      "get": {
+        "operationId": "get__v1_bookings__id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/bookings/{id}/confirmation": {
+      "post": {
+        "operationId": "post__v1_bookings__id_confirmation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/bookings/{id}/cancellation": {
+      "post": {
+        "operationId": "post__v1_bookings__id_cancellation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    },
+    "/v1/bookings/{id}/photo-delivery": {
+      "post": {
+        "operationId": "post__v1_bookings__id_photo_delivery",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "reference": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reference"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/support": {
+      "post": {
+        "operationId": "post__v1_support",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "subject": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 150
+                  },
+                  "message": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "orderId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  }
+                },
+                "required": [
+                  "subject",
+                  "message"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/staff/operations/{id}": {
+      "get": {
+        "operationId": "get__v1_staff_operations__id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API.md and source service return types."
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid Cognito access token"
+          },
+          "403": {
+            "description": "Insufficient role or resource ownership"
+          },
+          "409": {
+            "description": "State or concurrency conflict"
+          },
+          "422": {
+            "description": "Not serviceable or failed OTP verification"
+          },
+          "503": {
+            "description": "Ordering, bookings or payment provider disabled"
+          }
+        }
+      }
+    }
+  }
+}

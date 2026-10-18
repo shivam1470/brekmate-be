@@ -1,0 +1,108 @@
+--- a/modules/storage/main.tf.json
++++ b/modules/storage/main.tf.json
+@@ -82,7 +82,7 @@
+     },
+     "aws_secretsmanager_secret": {
+       "provider": {
+-        "for_each": "${toset([\"gateway-api\", \"gateway-webhook\"])}",
++        "for_each": "${toset([\"gateway-api\", \"gateway-webhook\", \"delivery-otp\"])}",
+         "name": "${var.name}/${each.value}",
+         "description": "Secret container only; values are provisioned outside OpenTofu.",
+         "recovery_window_in_days": 30,
+@@ -102,6 +102,9 @@
+     },
+     "secret_arns": {
+       "value": "${[for s in aws_secretsmanager_secret.provider : s.arn]}"
++    },
++    "delivery_otp_secret_arn": {
++      "value": "${aws_secretsmanager_secret.provider[\"delivery-otp\"].arn}"
+     }
+   }
+ }
+--- a/modules/runtime/main.tf.json
++++ b/modules/runtime/main.tf.json
+@@ -114,6 +114,17 @@
+     "alarm_topic_arn": {
+       "type": "string",
+       "description": ""
++    },
++    "application_environment": {
++      "type": "map(string)",
++      "default": {},
++      "description": "Non-secret backend configuration and secret ARNs only. Never place secret values here.",
++      "validation": [
++        {
++          "condition": "${length(setintersection(toset(keys(var.application_environment)),toset([\"ENVIRONMENT_NAME\",\"CORE_TABLE\",\"LEDGER_TABLE\",\"OPERATIONS_TABLE\",\"CUSTOMER_ISSUER\",\"STAFF_ISSUER\",\"CUSTOMER_CLIENT_ID\",\"STAFF_CLIENT_ID\",\"PAYMENT_SECRET_ARNS\"]))) == 0}",
++          "error_message": "Application configuration cannot override infrastructure identity or table bindings."
++        }
++      ]
+     }
+   },
+   "locals": {
+@@ -167,17 +178,7 @@
+         "publish": true,
+         "environment": [
+           {
+-            "variables": {
+-              "ENVIRONMENT_NAME": "${var.name}",
+-              "CORE_TABLE": "${var.table_names.core}",
+-              "LEDGER_TABLE": "${var.table_names.ledger}",
+-              "OPERATIONS_TABLE": "${var.table_names.operations}",
+-              "PAYMENT_SECRET_ARNS": "${jsonencode(var.secret_arns)}",
+-              "CUSTOMER_ISSUER": "${var.issuers.customer}",
+-              "STAFF_ISSUER": "${var.issuers.staff}",
+-              "CUSTOMER_CLIENT_ID": "${var.clients.customer}",
+-              "STAFF_CLIENT_ID": "${var.clients.staff}"
+-            }
++            "variables": "${merge({ENVIRONMENT_NAME=var.name,CORE_TABLE=var.table_names.core,LEDGER_TABLE=var.table_names.ledger,OPERATIONS_TABLE=var.table_names.operations,PAYMENT_SECRET_ARNS=jsonencode(var.secret_arns),CUSTOMER_ISSUER=var.issuers.customer,STAFF_ISSUER=var.issuers.staff,CUSTOMER_CLIENT_ID=var.clients.customer,STAFF_CLIENT_ID=var.clients.staff}, var.application_environment)}"
+           }
+         ],
+         "tags": "${var.tags}",
+--- a/environments/staging/main.tf.json
++++ b/environments/staging/main.tf.json
+@@ -135,6 +135,11 @@
+     "alarm_emails": {
+       "type": "set(string)",
+       "default": []
++    },
++    "application_environment": {
++      "type": "map(string)",
++      "default": {},
++      "description": "Reviewed non-secret backend configuration. Supply settings from the backend integration example."
+     }
+   },
+   "provider": {
+@@ -220,7 +225,8 @@
+       "origins": "${var.staff_origins}",
+       "alarm_topic_arn": "${module.operations.topic_arn}",
+       "log_days": 7,
+-      "concurrency": 2
++      "concurrency": 2,
++      "application_environment": "${merge(var.application_environment,{OTP_SECRET_ARN=module.storage.delivery_otp_secret_arn})}"
+     }
+   },
+   "output": {
+--- a/environments/production/main.tf.json
++++ b/environments/production/main.tf.json
+@@ -135,6 +135,11 @@
+     "alarm_emails": {
+       "type": "set(string)",
+       "default": []
++    },
++    "application_environment": {
++      "type": "map(string)",
++      "default": {},
++      "description": "Reviewed non-secret backend configuration. Supply settings from the backend integration example."
+     }
+   },
+   "provider": {
+@@ -220,7 +225,8 @@
+       "origins": "${var.staff_origins}",
+       "alarm_topic_arn": "${module.operations.topic_arn}",
+       "log_days": 30,
+-      "concurrency": 10
++      "concurrency": 10,
++      "application_environment": "${merge(var.application_environment,{OTP_SECRET_ARN=module.storage.delivery_otp_secret_arn})}"
+     }
+   },
+   "output": {
