@@ -1,0 +1,26 @@
+# Findings and disposition
+
+Release decision: staging deployment blocked pending access/provider validation and reviewed account plan. Production blocked. Existing reports are historical; current evidence is in VERIFICATION.md.
+
+| Priority | Finding / source | Disposition |
+|---|---|---|
+| P0 release | Four expected GitHub repos return 404; no local .git metadata | Preserved originals, recovered and compared Drive text source. Cannot establish upstream HEAD, dirty status or history/secret scan. Do not push an imported snapshot over unknown history. |
+| P1 | Delivered customer detail stops polling before cash collection (FE Orders.tsx) | Fixed. Delivery/pickup resume and foreground timer tests; background polling suppressed, completion stops subscriptions. |
+| P1 | Deactivated rider retains assigned order/delivery/cash access (BE service.ts) | Fixed. Active registration is checked for reads, mutations and replay; mutation transaction observes current rider record. General JWT revocation remains open. |
+| P1 | Staff stock edit overwrites checkout decrement or concurrent edit (BE saveProduct; FE Management) | Fixed. Server revisions returned by menu; required expectedVersion for existing product. 409 prompts explicit refresh; no automatic retry of stale stock. |
+| P1 | Backend runtime requirements disconnected from infra | Integrated reviewed existing patch, exact 41-route example, dedicated OTP-secret ARN wiring and reserved identity/table binding validation. Provider/live acceptance blocked. |
+| P1 | Staff distribution has no CSP | Added self-hosted assets policy and exact API/regional Cognito connection origins; no wildcard/inline/eval exception. Static regressions pass; actual browser/header acceptance blocked. |
+| P1 | Enabling venue confirmation can silently use proposed default schedule/duration/buffer | Fixed runtime guard requires all four explicit settings. Removed proposed numeric values from integration example. Enquiries remain allowed; schedule/15-minute slot/capacity/promotion policies still need review. |
+| P1 | Frontend npm audit: 30 high, 18 moderate propagated package entries | Open security gate, not suppressed. Three root advisories: braces<=3.0.3, node-forge<=1.4.0, sprintf-js<=1.1.3. Current registry/advisory check found no patched versions. Do not force Expo/RN downgrades. Toolchain exploit exposure and shipped bundle reachability not fully established. |
+| P1 | JWT group changes/disabled staff users are not immediately checked server-side | Open. Offline JWT checks accept an otherwise valid token until expiry. Existing role-downgrade tests inject new roles and do not prove Cognito revocation. Need approved immediate revocation design, real issuer/client/refresh/security tests. |
+| P1 | Ordinary basket persistence absent; large SecureStore checkout payload behavior unverified | Open. Pending checkout persists; ordinary cart does not. Requires account-scoped persistence with restore validation, expiry/corruption behavior and device tests; do not put arbitrary large baskets in token storage without size validation. |
+| P1 | No safe completed COD exception/refund/settlement operations | Open business + implementation path. Issue reporting/comparison exist, saved shift settlement/refunds/final failed-delivery disposition do not. |
+| P1 | Tax/invoices, reward rounding, first-created referral/cancellation and pickup treatment unresolved | Orders remain disabled by default. Do not set approval flags to bypass decisions. Pickup currently qualifies once staff mark delivered and collected. |
+| P1 | Privacy retention/erasure/support lifecycle incomplete | Open before public launch; account disable is not full erasure. Real operational contact, published terms/privacy/support and staff responsibilities needed. |
+| P1 | No verified AWS account, plan, backups/restore, live integration or signed app/device evidence | Open. AWS CLI/credential environment/shared credentials absent. No account credit/Free Tier eligibility established. |
+| P2 | Abuse controls and operational volume | Gateway aggregate throttle exists; no complete account/IP distributed limits or referral risk controls. History-wide polling/lists and staff memory-only journals need volume/reload validation. |
+| P2 | Provider cache artifacts and plugin startup | Removed only incomplete local provider download files; checksum validation progressed. Provider handshake still fails. No checksum/signature bypass or environment restriction workaround. |
+| P2 | Browser tests cannot launch | Chromium installation returned corrupt/truncated downloads. Five Playwright scenarios fail at launcher setup; no scenario-level pass claimed. |
+| Deferred | Online payments/top-ups/withdrawals, automated photos, push/external messages | Outside initial COD release. Old quality specs mention prepaid; confirmed scope docs corrected and deferred cases must not gate COD release. No provider/service enabled. |
+
+No tax rate, refund/reversal policy, promotion duration, venue schedule or business rounding rule was invented. Existing implementation proposals are called out explicitly. The default-disabled confirmation and ordering paths allow independent catalogue/enquiry/staff review, but do not establish safe public ordering.

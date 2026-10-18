@@ -1,0 +1,129 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 check
+> npm run typecheck && npm test && npm run contracts && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 test
+> node --import tsx --test test/*.test.ts
+
+✔ COD requires accepted server quote before any stock writes (15.881346ms)
+✔ changed price is rejected without stock reservation (7.992314ms)
+✔ expired quote rejects new attempts but accepted replay returns original order (10.167185ms)
+✔ quote binds identity and basket options (1.197965ms)
+✔ quote cannot be forged (0.828241ms)
+✔ changed wallet balance requires renewed quote consent (1.011997ms)
+✔ reconciliation distinguishes unknown accepted and safely abandoned attempts (2.007558ms)
+✔ late checkout racing abandonment cannot produce an unknown accepted order (12.746158ms)
+✔ delivery contact is validated and retained in the order snapshot (7.152427ms)
+✔ legacy coordinate-only delivery requires recipient contact (0.728342ms)
+✔ serviceability checks configured radius early (2.018905ms)
+✔ cash collection index uses IST collection day and records retries once (4.401225ms)
+✔ dispatch directory lists rider names and denies customer access (0.935742ms)
+✔ delivery issue flags a delivery without cash or handoff effects (8.967516ms)
+✔ café can renew a late OTP with a reason but rider cannot (13.812397ms)
+✔ strict delivery threshold and reward cap (0.966779ms)
+✔ basket uses quantity and add-ons (0.154702ms)
+✔ invalid money -1 (0.258207ms)
+✔ invalid money NaN (0.075933ms)
+✔ invalid money Infinity (0.072058ms)
+✔ invalid money 1.5 (2.282079ms)
+✔ invalid money 9007199254740991 (0.097837ms)
+✔ server catalogue ignores forged client prices (12.845648ms)
+✔ duplicate checkout returns same order and reserves stock once (7.540417ms)
+✔ idempotency key cannot be reused with different body (1.832125ms)
+✔ concurrent buyers cannot oversell (15.106945ms)
+✔ order ownership enforced (1.380448ms)
+✔ invalid order transitions denied (1.558705ms)
+✔ customer cannot manage menu (0.268772ms)
+✔ cancellation restores stock exactly once (1.042572ms)
+✔ online checkout fails closed until gateway integration configured (0.413119ms)
+✔ delivery outside configured radius rejected (1.103403ms)
+✔ booking enquiry does not reserve; simultaneous confirmations cannot overlap (26.435589ms)
+✔ booking guest limit enforced (1.206628ms)
+✔ deleted account cannot order (3.357861ms)
+✔ Dynamo gets and paginated queries use strong reads and table key conditions (2.55647ms)
+✔ Dynamo preserves retry/error semantics TransactionConflictException undefined (0.876233ms)
+✔ Dynamo preserves retry/error semantics TransactionCanceledException ConditionalCheckFailed,None (0.29383ms)
+✔ Dynamo preserves retry/error semantics TransactionCanceledException ProvisionedThroughputExceeded (0.618747ms)
+✔ Dynamo preserves retry/error semantics AccessDeniedException undefined (0.231307ms)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+✔ health is public, all customer data requires authentication (149.483006ms)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+✔ HTTP checkout, strict schemas, ownership, replay, staff transitions (28.540423ms)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+✔ HTTP rejects missing idempotency, content type, oversize payload (9.687325ms)
+(node:100) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+✔ HTTP does not expose stack traces, OTP hashes, cacheable responses (8.66327ms)
+✔ HTTP profile, address, support and booking customer/staff journey (24.313861ms)
+✔ reward rounding and subtotal threshold 0 (1.552937ms)
+✔ reward rounding and subtotal threshold 1 (0.18054ms)
+✔ reward rounding and subtotal threshold 4 (0.103465ms)
+✔ reward rounding and subtotal threshold 5 (0.064276ms)
+✔ reward rounding and subtotal threshold 9900 (0.062764ms)
+✔ reward rounding and subtotal threshold 9901 (0.05294ms)
+✔ reward rounding and subtotal threshold 9999 (0.083505ms)
+✔ reward rounding and subtotal threshold 10000 (0.063365ms)
+✔ reward rounding and subtotal threshold 10001 (0.072268ms)
+✔ real public quote rejects customer price and balance injection (10.836357ms)
+✔ duplicated SKU and addon selections rejected (4.014415ms)
+✔ reorder re-prices against current menu (4.813712ms)
+✔ deleting address removes its PII and hides it from address list (3.369318ms)
+✔ order status notification is written with state transition (3.528307ms)
+✔ menu query pagination preserves all products (16.401916ms)
+✔ insufficient stock aborts all wallet and order writes (1.460779ms)
+✔ runtime cannot enable ordering before policy review (2.441648ms)
+✔ verified customer claims cannot become staff through groups (1.883953ms)
+✔ staff groups are allowlisted (0.312388ms)
+✔ reject claims {"token_use":"id"} (0.376274ms)
+✔ reject claims {"client_id":"other"} (0.132779ms)
+✔ reject claims {"sub":"bad#identity"} (0.158598ms)
+✔ reject claims {} (0.12038ms)
+✔ auth does not trust arbitrary issuer URLs (0.334341ms)
+✔ production config fails closed with missing configuration (4.972631ms)
+✔ production config rejects local/test overrides (0.581381ms)
+✔ ledger overwrites are impossible through transaction API (1.09418ms)
+✔ read-only dependencies are included in Dynamo transaction conditions (6.568842ms)
+✔ idempotent replay cannot bypass a staff role downgrade (25.997182ms)
+✔ referral reward waits for delivery AND exact COD collection, credits once (22.732391ms)
+✔ self-referral denied and referral locked after order (2.338765ms)
+✔ reward debit and cancellation restoration are atomic and immutable (14.422239ms)
+✔ concurrent reward spending cannot double-spend available balance (18.995622ms)
+✔ COD cannot be collected before delivery or by unrelated rider (4.001946ms)
+✔ delivery OTP belongs to customer and rider assignment is enforced (7.173628ms)
+✔ five invalid OTP attempts lock delivery verification (5.313311ms)
+✔ closed cafe, unknown SKU and invalid addons are rejected (1.155081ms)
+✔ booking consent is required for requested photo delivery (4.899952ms)
+✔ cancelled booking releases slots for another confirmation (2.554608ms)
+✔ unapproved venue schedule disables confirmation, enquiries still work (0.558577ms)
+✔ support cannot attach another customers order (1.891835ms)
+ℹ tests 86
+ℹ suites 0
+ℹ pass 86
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 925.631455
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 contracts
+> node --import tsx scripts/contracts.ts
+
+(node:252) [FSTDEP023] FastifyDeprecation: disableRequestLogging option is deprecated. Use the logController option with disableRequestLogging or isLogDisabled override instead. The disableRequestLogging top-level option will be removed in `fastify@6`.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Generated 41 routes.
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @brekmate/backend@0.1.0 build
+> node scripts/build.mjs
+
+Built dist/index.mjs (handler index.handler) and pricing contract module.

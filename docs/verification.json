@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-18",
+  "node": "24.19.0",
+  "backendTests": {
+    "passed": 86,
+    "failed": 0,
+    "database": "transactional in-memory adapter",
+    "auth": "injected fixtures; Cognito claim tests, no live pool/JWKS"
+  },
+  "pricingVectors": {
+    "passed": 37296,
+    "failed": 0,
+    "breakdown": {
+      "generatedBaskets": 36864,
+      "boundaryQuotes": 432
+    },
+    "scope": "actual bundled pricing module; arithmetic only, not native E2E",
+    "note": "Earlier baseline; arithmetic unchanged, not rerun after workspace restoration."
+  },
+  "typecheck": "passed",
+  "lambdaBuild": "passed",
+  "infraPatchApplyCheck": "passed against prepared local infra; not applied/deployed",
+  "dependencyAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "coverage": {
+    "loadedModulesOnly": true,
+    "linePercent": 94.07,
+    "branchPercent": 90.84,
+    "functionPercent": 89.12,
+    "excludedUnloaded": [
+      "Lambda cold-start entry",
+      "local server entry",
+      "live Secrets Manager loader"
+    ],
+    "doesNotEstablish": "real DynamoDB/IAM, live JWT verification, provider behavior or production readiness",
+    "note": "Earlier baseline, not remeasured for COD batch 1."
+  },
+  "notExecuted": [
+    "AWS deployment/plan",
+    "real DynamoDB integration",
+    "provider payments/refunds",
+    "live Cognito JWKS verification",
+    "real device/mobile E2E",
+    "GitHub CI"
+  ],
+  "packageLockSha256": "5dab44e79d5a8146829e20a83afa8174ee80e8e31498a6877eb1d67fbfa29b1a",
+  "routeCount": 41,
+  "productionReady": false
+}
